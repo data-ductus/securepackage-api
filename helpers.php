@@ -22,3 +22,13 @@ function checkQuery ($query) {
         return "Query failed";
     }
 }
+
+function generateEventIdentifier($length) {
+    $characters = '0123456789abcdef';
+    $charactersLength = strlen($characters);
+    $identifier = '';
+    for ($i = 0; $i < $length; $i++) {
+        $identifier .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $identifier;
+}

@@ -1,4 +1,5 @@
 <?php
+
 function fetch_logistics_agreement_info ($data, $connection) {
     $sql = "SELECT agreements.*, terms.* FROM agreements
             INNER JOIN terms ON agreements.terms_id = terms.terms_id
@@ -158,9 +159,43 @@ function fetch_sensor_data ($data, $connection) {
 function violate_agreement ($data, $connection) {
     $sql = "UPDATE agreements SET violation = TRUE WHERE agreement_id = '$data->agreement_id'";
     $connection->query($sql);
+
+    //Add event to the database
+    $event_payload = new stdClass();
+    $event_payload->agreement_id = $data->agreement_id;
+    generate_event($event_payload, $data->event_timestamp, "VIOLATE", $connection);
 }
 
 function alter_agreement_state ($data, $connection) {
     $sql = "UPDATE agreements SET state = '$data->state' WHERE agreement_id = '$data->agreement_id'";
     $connection->query($sql);
+
+    //Add event to the database
+    $event_type = "";
+    $event_payload = new stdClass();
+    $event_payload->agreement_id = $data->agreement_id;
+    switch ($data->state) {
+        case 'TRANSIT':
+            $event_type = "S_POST";
+            break;
+        case 'DELIVERED':
+            $event_type = "B_DELIVER";
+            break;
+        case 'COMPLETE':
+            $event_type = "B_APPROVE";
+            break;
+        case 'REJECTED':
+            $event_type = "B_REJECT";
+            break;
+        case 'RETURN':
+            $event_type = "B_POST";
+            break;
+        case 'RETURNED':
+            $event_type = "S_DELIVER";
+            break;
+        default:
+            echo json_encode('ERROR');
+            break;
+    }
+    generate_event($event_payload, $data->event_timestamp, $event_type, $connection);
 }

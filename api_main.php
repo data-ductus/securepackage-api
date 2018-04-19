@@ -5,6 +5,8 @@ header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 include ('db_connect.php');
 include ('db_operations.php');
 include ('logistics_api.php');
+include ('helpers.php');
+include ('event_generator.php');
 
 $data = json_decode(file_get_contents("php://input"));
 
@@ -93,6 +95,15 @@ function handleHttpCall($data) {
             break;
         case "CHECK_RETURN":
             check_return($data, $connection);
+            break;
+        case "FETCH_RECENT_EVENTS":
+            fetch_recent_events($data, $connection);
+            break;
+        case "FETCH_RECENT_AGREEMENTS":
+            fetch_recent_agreements($data, $connection);
+            break;
+        case "FETCH_ADDRESS":
+            fetch_address($data, $connection);
             break;
         default:
             echo json_encode("ACTION_ERROR");
