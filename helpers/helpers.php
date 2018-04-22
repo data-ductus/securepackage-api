@@ -1,4 +1,16 @@
 <?php
+/**
+ * helpers/helpers.php
+ *
+ * Contains helper functions (generators, parsers etc.).
+ */
+
+/**
+ * Modifies JSON array by handling null and boolean values.
+ *
+ * @param $data - JSON array.
+ * @return mixed - Modified JSON array.
+ */
 function parseJSON($data) {
     foreach($data as &$field) {
         if ($field === null) {
@@ -14,15 +26,12 @@ function parseJSON($data) {
     return $data;
 }
 
-function checkQuery ($query) {
-    if ($query) {
-        return "Query success (" . mysqli_affected_rows($query) . ")";
-    }
-    else {
-        return "Query failed";
-    }
-}
-
+/**
+ * Generates event identifier of a desired length.
+ *
+ * @param $length - Length of the desired hexadecimal identifier.
+ * @return string - Event identifier.
+ */
 function generateEventIdentifier($length) {
     $characters = '0123456789abcdef';
     $charactersLength = strlen($characters);
