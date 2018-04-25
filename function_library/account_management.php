@@ -2,7 +2,7 @@
 /**
  * function_library/account_management.php
  *
- * Contains functions, which are used for account management.
+ * Contains functions, which are used for user account management.
  */
 
 /**
@@ -49,5 +49,33 @@ function login($data, $connection) {
     } else {
         $response->status = "LOGIN_FAIL";
     }
+    http_response($response);
+}
+
+/**
+ * Fetches user account details.
+ *
+ * @param $data - HTTP data, which was received from the server.
+ * @param $connection - Database connection.
+ */
+function fetch_account($data, $connection) {
+    $sql = "SELECT account_id, public_key, full_name, street_address, city, postcode FROM accounts WHERE account_id = '$data->account_id'";
+    $result = $connection->query($sql);
+    $response = mysqli_fetch_array($result);
+    http_response($response);
+}
+
+/**
+ * Fetches user account history.
+ *
+ * @param $data - HTTP data, which was received from the server.
+ * @param $connection - Database connection.
+ */
+function fetch_account_history($data, $connection) {
+    $response = array();
+    $sql = "SELECT agreement_id, buyer_id, seller_id, state, date_created FROM agreements 
+            WHERE (seller_id = '$data->account_id' OR buyer_id = '$data->account_id') AND (state = 'COMPLETED' OR state = 'INACTIVE')";
+    $result = $connection->query($sql);
+    while($row = mysqli_fetch_array($result)) { $response[] = $row; }
     http_response($response);
 }

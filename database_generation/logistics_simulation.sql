@@ -1,3 +1,4 @@
+-- auto-generated definition
 CREATE TABLE logistics_simulation
 (
   kolli_id     VARCHAR(255)                NOT NULL

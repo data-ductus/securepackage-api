@@ -1,3 +1,4 @@
+-- auto-generated definition
 CREATE TABLE items
 (
   agreement_id VARCHAR(255) NOT NULL

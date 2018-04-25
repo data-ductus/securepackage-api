@@ -1,3 +1,4 @@
+-- auto-generated definition
 CREATE TABLE images
 (
   image_id VARCHAR(255) NOT NULL

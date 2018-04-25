@@ -1,10 +1,17 @@
 <?php
+/*
+ * api_main.php
+ * Securepackage API target file
+ *
+ */
+
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
 
 //Include all necessary libraries and helpers
 include('function_library/account_management.php');
 include('function_library/agreement_management.php');
+include('function_library/clerk_management.php');
 include('function_library/event_management.php');
 include('function_library/explorer_management.php');
 include('function_library/logistics_management.php');

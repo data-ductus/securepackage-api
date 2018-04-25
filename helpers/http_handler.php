@@ -37,6 +37,9 @@ function handle_http_call($data) {
         case "FETCH_AGREEMENT_IMAGES":
             fetch_agreement_images($data, $connection);
             break;
+        case "FETCH_CURRENT_AGREEMENT_TERMS":
+            fetch_current_agreement_terms($data, $connection);
+            break;
         case "PROPOSE_TERMS":
             propose_terms($data, $connection);
             break;
@@ -106,8 +109,32 @@ function handle_http_call($data) {
         case "FETCH_ADDRESS_EVENTS":
             fetch_address_events($data, $connection);
             break;
+        case "CLERK_LOGIN":
+            login_clerk($data, $connection);
+            break;
+        case "FETCH_CLERK_AGREEMENTS":
+            fetch_clerk_agreements($connection);
+            break;
+        case "FETCH_RESOLVED_AGREEMENTS":
+            fetch_resolved_agreements($connection);
+            break;
+        case "FETCH_ACCOUNT":
+            fetch_account($data, $connection);
+            break;
+        case "FETCH_ACCOUNT_HISTORY":
+            fetch_account_history($data, $connection);
+            break;
+        case "RESOLVE_CONFLICT":
+            resolve_conflict($data, $connection);
+            break;
+        case "FETCH_CLERK_DECISION":
+            fetch_clerk_decision($data, $connection);
+            break;
+        case "CONFIRM_CLERK_DECISION":
+            confirm_clerk_decision($data, $connection);
+            break;
         default:
-            echo json_encode("ACTION_ERROR");
+            http_response("ACTION_ERROR");
     }
     $connection->close();
 }

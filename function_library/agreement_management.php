@@ -58,13 +58,13 @@ function fetch_agreements($data, $connection) {
                 INNER JOIN terms ON agreements.agreement_id = terms.agreement_id AND terms.terms_id = agreements.terms_id
                 INNER JOIN images ON agreements.agreement_id = images.item_id";
     if (isset ($data->user_search)) {
-        $sql .= " WHERE agreements.seller_id = '$data->user_search' AND agreements.state != 'INACTIVE'";
+        $sql .= " WHERE agreements.seller_id = '$data->user_search' AND agreements.state != 'INACTIVE' AND agreements.state != 'COMPLETED'";
     }
     if (isset ($data->status)) {
         $sql .= " AND agreements.state = '$data->status'";
     }
     if (isset ($data->buyer_search)) {
-        $sql .= " WHERE agreements.buyer_id = '$data->buyer_search'";
+        $sql .= " WHERE agreements.buyer_id = '$data->buyer_search' AND agreements.state != 'INACTIVE' AND agreements.state != 'COMPLETED'";
     }
     $result = $connection->query($sql);
     while($row = mysqli_fetch_array($result)) { $response[] = $row; }
@@ -98,6 +98,20 @@ function fetch_agreement_terms ($data, $connection) {
     }
     $result = $connection->query($sql);
     while($row = mysqli_fetch_array($result)) { $response[] = $row; }
+    http_response($response);
+}
+
+/**
+ * Fetches current terms of an agreement.
+ *
+ * @param $data - HTTP data, which was received from the server.
+ * @param $connection - Database connection.
+ */
+function fetch_current_agreement_terms ($data, $connection) {
+    $sql = "SELECT terms.* FROM terms 
+            INNER JOIN agreements ON terms.terms_id = agreements.terms_id AND agreements.agreement_id='$data->id'";
+    $result = $connection->query($sql);
+    $response = mysqli_fetch_array($result);
     http_response($response);
 }
 
@@ -167,7 +181,7 @@ function alter_agreement_state ($data, $connection) {
         case 'DELIVERED':
             $event_type = "B_DELIVER";
             break;
-        case 'COMPLETE':
+        case 'COMPLETED':
             $event_type = "B_APPROVE";
             break;
         case 'REJECTED':

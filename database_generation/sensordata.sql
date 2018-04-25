@@ -1,3 +1,4 @@
+-- auto-generated definition
 CREATE TABLE sensor_data
 (
   sensor_id        VARCHAR(255) NULL,

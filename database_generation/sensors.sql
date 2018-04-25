@@ -1,3 +1,4 @@
+-- auto-generated definition
 CREATE TABLE sensors
 (
   sensor_id   VARCHAR(255)                                 NOT NULL
@@ -13,4 +14,3 @@ CREATE TABLE sensors
 
 CREATE INDEX FK_sensors_kolli_id
   ON sensors (kolli_id);
-
